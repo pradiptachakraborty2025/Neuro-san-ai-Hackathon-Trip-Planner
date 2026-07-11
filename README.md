@@ -1,4 +1,4 @@
-# [Project name] — Agentic trip planner
+# [Project name] — Trip planner
 
 An AAOSA multi-agent network (coordinator + flight/hotel/activity/budget
 specialists) that turns a natural-language trip request into a complete,
