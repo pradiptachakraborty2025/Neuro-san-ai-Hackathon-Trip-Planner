@@ -60,7 +60,7 @@ For that you have to follow this steps.
    ```
 8. **Active Agent Registry**
 
-   Each entry is "<path-to-hocon-file>": <true/false>. Setting yours to true tells neuro-san:
+   Each entry is "path-to-hocon-file": true/false. Setting yours to true tells neuro-san:
 
     "load basic/trip_planner.hocon"
     "make the top-level agent defined in it (TripPlanner) available as a callable network"
