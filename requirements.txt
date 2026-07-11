@@ -1,1 +1,5 @@
+python 3.14.6
 
+neuro-san==0.6.72
+
+langchain-mistralai==1.1.2
