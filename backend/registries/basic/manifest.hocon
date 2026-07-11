@@ -1,1 +1,3 @@
-
+{
+  "basic/trip_planner.hocon": true,
+}
