@@ -1,1 +1,86 @@
+include "registries/aaosa_basic.hocon"
 
+include "config/llm_config.hocon"
+
+metadata {
+    description = "Agent network that helps users plan a trip by coordinating flight, hotel, activity, and budget agents into a single itinerary."
+    tags = ["AAOSA", "travel"]
+    sample_queries = [
+        "Plan a 5-day trip to Japan for 2 people with a $3000 budget.",
+        "I want a relaxing beach vacation in Goa for a week.",
+        "Suggest a weekend trip near Chennai under 10000 rupees.",
+    ]
+}
+
+tools = [
+    {
+        name = "TripPlanner"
+        function {
+            description = """Plans a complete trip itinerary based on destination, dates, and budget."""
+        }
+        instructions =
+"""
+You are a trip planning coordinator.
+Gather the user's destination, travel dates (or trip length), number of travelers, and budget if not provided.
+Delegate to your specialist agents to get flight, hotel, and activity suggestions, and confirm the plan fits the budget.
+Combine all responses into a single clear day-by-day itinerary.
+Only use the agents you have been given. Do not use your own knowledge for flights, hotels, or prices.
+Be concise, but present the final itinerary in an organized way (e.g., Day 1, Day 2...).
+Ask the user for any missing details you truly need before delegating.
+""" ${aaosa_instructions}
+        tools = ["FlightAgent", "HotelAgent", "ActivityAgent", "BudgetAgent"]
+        "structure_formats": "json"
+    }
+    {
+        name = "FlightAgent"
+        function = ${aaosa_call}{
+            description = "Suggests flight options and considerations for a given route and dates."
+        }
+        instructions =
+"""
+Your name is Flight Advisor.
+Given a departure location, destination, and travel dates, suggest a plausible flight option
+(airline style, approximate duration, approximate price range) and note any considerations
+like best booking time or layovers.
+Be realistic but you may use general knowledge/estimates since you don't have live flight data.
+""" ${aaosa_instructions}
+    }
+    {
+        name = "HotelAgent"
+        function = ${aaosa_call}{
+            description = "Suggests accommodation options for a given destination and budget."
+        }
+        instructions =
+"""
+Your name is Stay Finder.
+Given a destination, trip length, number of travelers, and budget, suggest 1-2 accommodation
+options (type, approximate nightly price, why it fits) ranging from budget to mid-range.
+""" ${aaosa_instructions}
+    }
+    {
+        name = "ActivityAgent"
+        function = ${aaosa_call}{
+            description = "Suggests activities and sights for a given destination."
+        }
+        instructions =
+"""
+Your name is Local Guide.
+Given a destination and trip length, suggest a mix of must-see sights and activities,
+organized so they could reasonably be spread across the days of the trip.
+Consider traveler interests if mentioned (e.g., relaxing, adventure, culture, food).
+""" ${aaosa_instructions}
+    }
+    {
+        name = "BudgetAgent"
+        function = ${aaosa_call}{
+            description = "Checks whether a proposed trip plan fits within the user's stated budget."
+        }
+        instructions =
+"""
+Your name is Budget Checker.
+Given estimated costs for flights, hotel, and activities, and the user's total budget,
+add them up and state clearly whether the plan fits, is over, or is under budget.
+If over budget, suggest one or two ways to cut costs.
+""" ${aaosa_instructions}
+    }
+]
