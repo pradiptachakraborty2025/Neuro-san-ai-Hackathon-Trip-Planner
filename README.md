@@ -74,9 +74,10 @@ Then interact with the `TripPlanner` agent via the neuro-san client UI at http:/
 
 ## Example prompts to try
 
-- "Plan a 5-day trip to Japan for 2 people with a $3000 budget."
+- "I want a trip near bangalore can you guide me."
 - "I want a relaxing beach vacation in Goa for a week."
 - "Suggest a weekend trip near Chennai under 10000 rupees."
+- "Plan a 5-day trip to Japan for 2 people with a $3000 budget."
 
 ## Notes
 
