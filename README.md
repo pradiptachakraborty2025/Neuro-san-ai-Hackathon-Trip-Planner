@@ -49,6 +49,7 @@ For that you have to follow this steps.
    ```
 
 6. **Set your LLM API key**
+
    Crete one .env file
    ```bash
    touch .env
