@@ -15,57 +15,60 @@ and [`summary.md`](./summary.md) for the project overview.
 ├── architecture.md
 ├── summary.md
 ├── requirements.txt
-├── manifest.hocon
 ├── registries/
-│   └── trip_planner.hocon      # agent network definition (TripPlanner + 4 specialists)
-└── config/
-    └── llm_config.hocon        # LLM/model configuration
+│   └── trip_planner.hocon
+│   └── manifest.hocon
+└── .env
 ```
 
 ## Prerequisites
 
-- Python [FILL IN version, e.g. 3.10+]
-- An API key for [FILL IN — e.g. OpenAI / Anthropic], set as an environment variable
+- Python [I used Python 3.14.6]
+- An API key for [e.g. OpenAI / Anthropic, I used Mistral Api Key], set as an environment variable
   (see below)
 - neuro-san installed (see `requirements.txt`)
 
+I did this in Gitub Codespaces
+For that you have to follow this steps.
 ## Setup
 
-1. **Clone the repo**
-   ```bash
-   git clone <your-repo-url>
-   cd <your-repo-name>
-   ```
+1. **Create a Codespace in Github**
 
 2. **Create and activate a virtual environment**
    ```bash
    python -m venv venv
-   source venv/bin/activate      # on Windows: venv\Scripts\activate
+   source venv/bin/activate
    ```
-
-3. **Install dependencies**
+3. **Download Neuro San Studio**
+    ```bash
+    pip install neuro-san-studio
+   ```
+5. **Install dependencies**
    ```bash
-   pip install -r requirements.txt
+   pip install langchain-mistralai==1.1.2
    ```
 
-4. **Set your LLM API key**
+6. **Set your LLM API key**
+   Crete one .env file
    ```bash
-   export OPENAI_API_KEY="your-key-here"   # or ANTHROPIC_API_KEY, etc — match llm_config.hocon
+   touch .env
    ```
+   Set your key in this file
+   ```bash
+   MISTRAL_API_KEY=Write your key here
+   ```
+8. **Active Agent Registry**
+   Each entry is "<path-to-hocon-file>": <true/false>. Setting yours to true tells neuro-san:
 
-5. **Register the agent network**
-   Make sure `manifest.hocon` includes a reference to `registries/trip_planner.hocon`
-   (this should already be in place).
+    "load basic/trip_planner.hocon"
+    "make the top-level agent defined in it (TripPlanner) available as a callable network"
 
 ## Running it
 
-[FILL IN — the actual command you use to start neuro-san / your server, e.g.:]
 ```bash
-python -m neuro_san.service.main_loop --config manifest.hocon
+ns run
 ```
-
-Then interact with the `TripPlanner` agent via [FILL IN — e.g. the neuro-san client
-UI at http://localhost:XXXX, or a CLI command].
+Then interact with the `TripPlanner` agent via the neuro-san client UI at http://localhost:XXXX
 
 ## Example prompts to try
 
@@ -77,4 +80,3 @@ UI at http://localhost:XXXX, or a CLI command].
 
 - Flight and hotel prices are LLM-estimated approximations, not live bookable
   quotes.
-- [FILL IN any other setup quirks, known issues, or notes for evaluators]
